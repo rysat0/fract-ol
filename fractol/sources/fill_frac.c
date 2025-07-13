@@ -6,7 +6,7 @@
 /*   By: rysato <rysato@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 20:24:41 by rysato            #+#    #+#             */
-/*   Updated: 2025/06/17 19:35:12 by rysato           ###   ########.fr       */
+/*   Updated: 2025/07/13 19:22:09 by rysato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,13 @@ void	error_help(void)
 	write(2, "Invalid Input Detected\n", 23);
 	write(2, "----------------------\n", 23);
 	write(2, "When you want to calculate Mandelbrot Set,\n", 43);
-	write(2, "Argument must be mandel and just it.\n", 32);
+	write(2, "Argument must be \"mandel\" and just it.\n", 34);
 	write(2, "----------------------\n", 23);
 	write(2, "When you want to calculate Julia Set,\n", 38);
-	write(2, "First arg must be julia,\n", 21);
-	write(2, "Second arg must be Real part,\n", 30);
-	write(2, "Third arg must be Real number of imaginary part\n", 48);
+	write(2, "First arg must be \"julia\",\n", 23);
+	write(2, "Second arg must be Real part number,\n", 37);
+	write(2, "Third arg must be Number of imaginary part\n", 43);
+	write(2, "----------------------\n", 23);
 }
 
 void	judge_fra(int argc, char **argv)
@@ -49,12 +50,12 @@ void	judge_fra(int argc, char **argv)
 void	initialize_fra(int argc, char **argv, t_frac *fra)
 {
 	if (argc == 2)
-		fra->type = 1;
+		fra->type = 1; //1==mandel
 	else if (argc == 4)
 	{
-		fra->type = 2;
-		fra->ju_real = ft_atod(argv[2]);
-		fra->ju_imag = ft_atod(argv[3]);
+		fra->type = 2; //2==julia
+		fra->ju_real = ft_atod(argv[2]); //実部
+		fra->ju_imag = ft_atod(argv[3]); //虚部
 	}
 	fra->mlx = mlx_init();
 	if (fra->mlx == NULL)

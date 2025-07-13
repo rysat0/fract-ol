@@ -6,7 +6,7 @@
 /*   By: rysato <rysato@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 17:15:31 by rysato            #+#    #+#             */
-/*   Updated: 2025/06/17 19:29:41 by rysato           ###   ########.fr       */
+/*   Updated: 2025/07/13 19:09:06 by rysato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	scr_to_cpx(int pix_x, int pix_y, t_frac *fra, t_cpx *coord)
 	plane_w = fra->view.max_real - fra->view.min_real;
 	plane_h = fra->view.max_imag - fra->view.min_imag;
 	coord->real = ((double)pix_x / (WIN_W - 1)) * plane_w + fra->view.min_real;
-	coord->imag = fra->view.max_imag - ((double)(pix_y / (WIN_H - 1))
-			* plane_h);
+	coord->imag = fra->view.max_imag - ((double)(pix_y / (WIN_H - 1)
+				* plane_h));
 }
 
 int	iterate_set(double za, double zb, double ca, double cb)
