@@ -6,7 +6,7 @@
 /*   By: rysato <rysato@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 11:47:25 by rysato            #+#    #+#             */
-/*   Updated: 2025/06/17 20:07:51 by rysato           ###   ########.fr       */
+/*   Updated: 2025/07/18 23:06:05 by rysato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,11 @@ int	main(int argc, char **argv)
 	t_frac	fra;
 
 	judge_fra(argc, argv);
-	initialize_fra(argc, argv, &fra);
+	initialize_fra(argv, &fra);
 	draw_frac(&fra);
-	make_hook();
-	main_loop();
+	make_hook(&fra);
+	mlx_loop(fra.mlx);
+	return(0);
 }
 
 //コマンドライン引数でマンデルブロ集合/ジュリア集合を判別

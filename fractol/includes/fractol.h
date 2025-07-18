@@ -20,8 +20,20 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+# define MAX_ITER 50
+
 # define WIN_W 1656
 # define WIN_H 1024
+
+# define ESCAPE 65307
+# define KEY_C 8
+# define LEFT 65361
+# define RIGHT 65363
+# define UP 65362
+# define DOWN 65364
+
+# define SCROLL_UP 4
+# define SCROLL_DOWN 5
 
 typedef struct s_cpx
 {
@@ -51,6 +63,7 @@ typedef struct s_frac
 	void	*mlx;
 	void	*win;
 	int		type;
+	int		color_shift;
 	double	ju_real;
 	double	ju_imag;
 	t_img	img;
@@ -60,5 +73,16 @@ typedef struct s_frac
 
 // type == 1  mandel
 // type == 2  julia
+// type == 3  burning ship
+
+void	judge_fra(int argc, char **argv);
+void	initialize_fra(char **argv, t_frac *fra);
+void	draw_frac(t_frac *fra);
+void	make_hook(t_frac *fra);
+void	handle_close(t_frac *fra);
+double	ft_atod(const char *str);
+int		t_strncmp(const char *s1, const char *s2, size_t n);
+int		pick_color(int ite, t_frac *fra);
+int		iterate_ship(double za, double zb, double ca, double cb);
 
 #endif FRACTOL_H

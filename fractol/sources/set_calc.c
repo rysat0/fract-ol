@@ -6,13 +6,13 @@
 /*   By: rysato <rysato@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 17:15:31 by rysato            #+#    #+#             */
-/*   Updated: 2025/07/13 19:09:06 by rysato           ###   ########.fr       */
+/*   Updated: 2025/07/18 22:26:14 by rysato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	scr_to_cpx(int pix_x, int pix_y, t_frac *fra, t_cpx *coord)
+static void	scr_to_cpx(int pix_x, int pix_y, t_frac *fra, t_cpx *coord)
 {
 	double	plane_w;
 	double	plane_h;
@@ -24,7 +24,7 @@ void	scr_to_cpx(int pix_x, int pix_y, t_frac *fra, t_cpx *coord)
 				* plane_h));
 }
 
-int	iterate_set(double za, double zb, double ca, double cb)
+static int	iterate_set(double za, double zb, double ca, double cb)
 {
 	int		ite;
 	double	next_za;
@@ -33,7 +33,7 @@ int	iterate_set(double za, double zb, double ca, double cb)
 	ite = 0;
 	next_za = 0.0;
 	next_zb = 0.0;
-	while (ite < 50)
+	while (ite < MAX_ITER)
 	{
 		next_za = (za * za) - (zb * zb) + ca;
 		next_zb = 2 * za * zb + cb;
@@ -46,19 +46,26 @@ int	iterate_set(double za, double zb, double ca, double cb)
 	return (ite);
 }
 
-int	pick_color(int ite)
+int	pick_color(int ite, t_frac *fra)
 {
-	if (ite == 50)
+	int shade;
+	if (ite == MAX_ITER)
 		return (0x000000);
-	return (0x00FFFF * ite);
+	shade = (ite * 5) % 256;
+	if(fra->color_shift % 3 == 0)
+		return(shade * 256 * 256);
+	else if(fra->color_shift % 3 == 1)
+		return(shade * 256);
+	else
+		return(shade);
 }
 
-void	set_pixel(t_frac *fra, int pix_x, int pix_y, int ite)
+static void	set_pixel(t_frac *fra, int pix_x, int pix_y, int ite)
 {
 	int		color;
 	char	*dst;
 
-	color = pick_color(ite);
+	color = pick_color(ite, fra);
 	dst = fra->img.data + (((pix_y * WIN_W) + pix_x) * 4);
 	*(int *)dst = color;
 }
@@ -82,6 +89,8 @@ void	draw_frac(t_frac *fra)
 			else if (fra->type == 2)
 				ite = iterate_set(coord.real, coord.imag, fra->ju_real,
 						fra->ju_imag);
+			else if (fra->type == 3)
+				ite = iterate_ship(0, 0, coord.real, coord.imag);
 			set_pixel(fra, pix_x, pix_y, ite);
 			pix_x++;
 		}

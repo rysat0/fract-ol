@@ -6,7 +6,7 @@
 /*   By: rysato <rysato@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 13:42:37 by rysato            #+#    #+#             */
-/*   Updated: 2025/06/15 15:18:49 by rysato           ###   ########.fr       */
+/*   Updated: 2025/07/18 22:26:24 by rysato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
-const void	space_skip(int *i, const char *str)
+static  void	space_skip(int *i, const char *str)
 {
 	while (str[*i] == ' ' || (str[*i] >= 9 && str[*i] <= 13))
 		(*i)++;
@@ -57,4 +57,24 @@ double	ft_atod(const char *str)
 		divider = divider * 10.0;
 	}
 	return (sign * (sum + decimal));
+}
+
+int iterate_ship(double za, double zb, double ca, double cb)
+{
+	int ite;
+	double tmp;
+
+	ite = 0;
+	while(ite < MAX_ITER)
+	{
+		za = fabs(za);
+		zb = fabs(zb);
+		tmp = (za * za) - (zb * zb) + ca;
+		zb = 2 * za * zb + cb;
+		za = tmp;
+		if ((za * za) + (zb * zb) > 4.0)
+			break ;
+		ite++;
+	}
+	return(ite);
 }
