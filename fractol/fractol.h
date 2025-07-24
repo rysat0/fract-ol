@@ -64,6 +64,7 @@ typedef struct s_frac
 	void	*win;
 	int		type;
 	int		color_shift;
+	int		max_iter;
 	double	ju_real;
 	double	ju_imag;
 	t_img	img;
@@ -83,6 +84,6 @@ int			handle_close(t_frac *fra);
 double		ft_atod(const char *str);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 int			pick_color(int ite, t_frac *fra);
-int			iterate_ship(double za, double zb, double ca, double cb);
+int			iterate_ship(t_cpx z, t_cpx c, const t_frac *fra);
 
 #endif

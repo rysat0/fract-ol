@@ -6,7 +6,7 @@
 /*   By: rysato <rysato@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 20:24:41 by rysato            #+#    #+#             */
-/*   Updated: 2025/07/24 18:27:32 by rysato           ###   ########.fr       */
+/*   Updated: 2025/07/24 18:44:28 by rysato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,5 @@ void	initialize_fra(char **argv, t_frac *fra)
 	fra->view.min_imag = -1.2;
 	fra->view.min_real = -1.5;
 	fra->color_shift = 0;
+	fra->max_iter = 50;
 }

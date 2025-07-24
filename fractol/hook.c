@@ -6,7 +6,7 @@
 /*   By: rysato <rysato@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 16:54:26 by rysato            #+#    #+#             */
-/*   Updated: 2025/07/24 18:32:03 by rysato           ###   ########.fr       */
+/*   Updated: 2025/07/24 19:25:15 by rysato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,9 @@ static void	zoom_view(t_frac *fra, double factor, double pix_x, double pix_y)
 
 	width = fra->view.max_real - fra->view.min_real;
 	height = fra->view.max_imag - fra->view.min_imag;
+	fra->max_iter = 50 + (int)(10 * log10(3.0 / width));
+	if (fra->max_iter > 1000)
+		fra->max_iter = 1000;
 	center_real = fra->view.min_real + (pix_x / (WIN_W - 1)) * width;
 	center_imag = fra->view.max_imag - (pix_y / (WIN_H - 1)) * height;
 	width = width * factor;

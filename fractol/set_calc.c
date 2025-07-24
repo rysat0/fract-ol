@@ -6,7 +6,7 @@
 /*   By: rysato <rysato@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 17:15:31 by rysato            #+#    #+#             */
-/*   Updated: 2025/07/24 18:24:11 by rysato           ###   ########.fr       */
+/*   Updated: 2025/07/24 19:20:30 by rysato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,33 +23,29 @@ static void	scr_to_cpx(int pix_x, int pix_y, t_frac *fra, t_cpx *coord)
 	coord->imag = fra->view.max_imag - ((double)pix_y / (WIN_H - 1)) * plane_h;
 }
 
-static int	iterate_set(double za, double zb, double ca, double cb)
+static int	iterate_set(t_cpx z, t_cpx c, const t_frac *fra)
 {
-	int		ite;
-	double	next_za;
-	double	next_zb;
+	int		iter;
+	double	tmp;
 
-	ite = 0;
-	next_za = 0.0;
-	next_zb = 0.0;
-	while (ite < MAX_ITER)
+	iter = 0;
+	while (iter < fra->max_iter)
 	{
-		next_za = (za * za) - (zb * zb) + ca;
-		next_zb = 2 * za * zb + cb;
-		za = next_za;
-		zb = next_zb;
-		if ((za * za) + (zb * zb) > 4.0)
+		tmp = z.real * z.real - z.imag * z.imag + c.real;
+		z.imag = 2 * z.real * z.imag + c.imag;
+		z.real = tmp;
+		if (z.real * z.real + z.imag * z.imag > 4.0)
 			break ;
-		ite++;
+		iter++;
 	}
-	return (ite);
+	return (iter);
 }
 
 int	pick_color(int ite, t_frac *fra)
 {
 	int	shade;
 
-	if (ite == MAX_ITER)
+	if (ite == fra->max_iter)
 		return (0x000000);
 	shade = (ite * 5) % 256;
 	if (fra->color_shift % 3 == 0)
@@ -85,12 +81,12 @@ void	draw_frac(t_frac *fra)
 		{
 			scr_to_cpx(pix_x, pix_y, fra, &coord);
 			if (fra->type == 1)
-				ite = iterate_set(0, 0, coord.real, coord.imag);
+				ite = iterate_set((t_cpx){0, 0}, coord, fra);
 			else if (fra->type == 2)
-				ite = iterate_set(coord.real, coord.imag, fra->ju_real,
-						fra->ju_imag);
-			else if (fra->type == 3)
-				ite = iterate_ship(0, 0, coord.real, coord.imag);
+				ite = iterate_set(coord, (t_cpx){fra->ju_real, fra->ju_imag},
+						fra);
+			else
+				ite = iterate_ship((t_cpx){0, 0}, coord, fra);
 			set_pixel(fra, pix_x, pix_y, ite);
 			pix_x++;
 		}

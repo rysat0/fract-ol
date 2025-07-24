@@ -6,7 +6,7 @@
 /*   By: rysato <rysato@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 13:42:37 by rysato            #+#    #+#             */
-/*   Updated: 2025/07/24 18:06:23 by rysato           ###   ########.fr       */
+/*   Updated: 2025/07/24 19:18:57 by rysato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,22 +59,22 @@ double	ft_atod(const char *str)
 	return (sign * (sum + decimal));
 }
 
-int	iterate_ship(double za, double zb, double ca, double cb)
+int	iterate_ship(t_cpx z, t_cpx c, const t_frac *fra)
 {
-	int		ite;
+	int		iter;
 	double	tmp;
 
-	ite = 0;
-	while (ite < MAX_ITER)
+	iter = 0;
+	while (iter < fra->max_iter)
 	{
-		za = fabs(za);
-		zb = fabs(zb);
-		tmp = (za * za) - (zb * zb) + ca;
-		zb = 2 * za * zb + cb;
-		za = tmp;
-		if ((za * za) + (zb * zb) > 4.0)
+		z.real = fabs(z.real);
+		z.imag = fabs(z.imag);
+		tmp = z.real * z.real - z.imag * z.imag + c.real;
+		z.imag = 2 * z.real * z.imag + c.imag;
+		z.real = tmp;
+		if (z.real * z.real + z.imag * z.imag > 4.0)
 			break ;
-		ite++;
+		iter++;
 	}
-	return (ite);
+	return (iter);
 }
