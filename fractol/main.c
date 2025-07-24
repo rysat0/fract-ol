@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rysato <rysato@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/15 16:28:25 by rysato            #+#    #+#             */
-/*   Updated: 2025/07/24 14:42:26 by rysato           ###   ########.fr       */
+/*   Created: 2025/06/14 11:47:25 by rysato            #+#    #+#             */
+/*   Updated: 2025/07/24 15:43:19 by rysato           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-int	main(void)
+int	main(int argc, char **argv)
 {
-	void	*mlx;
-	void	*win;
+	t_frac	fra;
 
-	mlx = mlx_init();
-	win = mlx_new_window(mlx, 1656, 1024, "title here");
-	mlx_loop(mlx);
-	mlx_destroy_display(mlx);
+	judge_fra(argc, argv, &fra);
+	initialize_fra(argv, &fra);
+	draw_frac(&fra);
+	make_hook(&fra);
+	mlx_loop(fra.mlx);
 	return (0);
 }
+
+//コマンドライン引数でマンデルブロ集合/ジュリア集合を判別
+//ジュリア集合の場合はz[0]の値をコマンドラインargv[2], argv[3]で指定
+//エラーの場合は使い方を表示
+
+//初期化
